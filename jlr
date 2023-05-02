@@ -1,0 +1,618 @@
+#1.---Ram's Numberic String Calculator-------
+
+def greatest_input_number(a):
+    list = []
+    opr = ''
+    result = 0
+    second_num = 0
+
+    opr_list = ['+', '-', '*', '/']
+
+    for i in opr_list:
+        if a.split(i):
+            n = a.split(i)
+            if len(n) == 2:
+                list = n
+                opr = i
+
+    num_list = [int(i) for i in list]
+    greatest_integer = max(num_list)
+    index_max = num_list.index(greatest_integer)
+    if index_max == 0:
+        second_num += num_list[1]
+    else:
+        second_num += num_list[0]
+        
+    if opr == '+':
+        result += num_list[0] + num_list[1]
+
+    elif opr == '/':
+        result += num_list[0] / num_list[1]
+
+    elif opr == '*':
+        result += num_list[0] * num_list[1]
+
+    elif opr == '-':
+        result += num_list[0] - num_list[1]
+
+    if result <= greatest_integer:
+        return greatest_integer
+    else:
+        return second_num
+
+
+inp_num = input()
+print(greatest_input_number(inp_num))
+
+
+#2.---Binary String s as input------
+
+def solve(s):
+    change = 0
+    even_1 = 0
+    even_0 = 0
+    odd_1 = 0
+    odd_0 = 0
+    for i in range(len(s)):
+        if i%2 == 0:
+            if s[i] == '1':
+                even_1 += 1
+            else:
+                even_0 += 1
+        else:
+            if s[i] == '1':
+                odd_1 += 1
+            else:
+                odd_0 += 1
+    if (even_1 + odd_0) > (even_0 + odd_1):
+        change += even_0 + odd_1
+    else:
+        change += even_1 + odd_0
+    if change < 0:
+        return -1
+    else:
+        return change
+
+s=input()
+
+print(solve(s))
+
+
+#3.----Tejas Maximum Integer Swap-----
+
+def num_swp(num):
+    num = str(num)
+    result = ''
+    list_num = [int(i) for i in num]
+    x = max(list_num)
+    position = list_num.index(x)
+    if position == 0:
+        list_num[position], list_num[position + 1] = list_num[position + 1], list_num[position]
+    else:
+        list_num[position], list_num[position - 1] = list_num[position - 1], list_num[position]
+    for i in list_num:
+        result += str(i)
+    return int(result)
+
+num = int(input())
+print(num_swp(num))
+
+
+#4.----Counting Car------
+
+def counting_car(arr):
+    n = len(arr)
+    pair = 0
+    for i in range(len(arr)):
+        if arr[i] == 0:
+            for j in range(i, n):
+                if arr[j]:
+                    pair += 1
+    return pair
+
+arr = input('arr[] = ').split(',')
+int_arr = [int(i) for i in arr]
+print(counting_car(int_arr))
+
+#6.--Selecting red, green, blue balls(sample input: 543, output:4)-----
+
+def minimumSetBalls(arr):
+    R = arr[0]
+    G = arr[1]
+    B = arr[2]
+    balls = [R, G, B]
+
+    balls.sort()
+
+    ans = 0
+    ans += balls[0]
+    balls[1] -= balls[0]
+    balls[2] -= balls[0]
+    balls[0] = 0
+
+    ans += balls[1] // 3
+    balls[1] %= 3
+    ans += balls[2] // 3
+    balls[2] %= 3
+
+    if balls[1] == 0 and balls[2] == 0:
+        pass
+
+    elif balls[1] == 1 and balls[2] == 1:
+        ans += 1
+    elif (balls[1] == 2 and balls[2] == 0) or (balls[1] == 0 and balls[2] == 2):
+        ans += 1
+    else:
+        ans += 1
+
+    return ans
+
+
+inp = input().split(' ')
+arr = [int(i) for i in inp]
+print(minimumSetBalls(arr))
+
+
+#7.----Ram smallest integer---sample input 112, output 121
+
+def find_next(number):
+    n = len(number)
+    for i in range(n - 1, 0, -1):
+        if number[i] > number[i - 1]:
+            break
+
+    if i == 1 and number[i] <= number[i - 1]:
+        print("Next number not possible")
+        return
+
+    x = number[i - 1]
+    smallest = i
+    for j in range(i + 1, n):
+        if x < number[j] < number[smallest]:
+            smallest = j
+
+    number[smallest], number[i - 1] = number[i - 1], number[smallest]
+
+    x = 0
+    for j in range(i):
+        x = x * 10 + number[j]
+    number = sorted(number[i:])
+    for j in range(n - i):
+        x = x * 10 + number[j]
+
+    return x
+
+
+digits = input()
+number = list(map(int, digits))
+print(find_next(number))
+
+
+#8.----The Placement process is, Number for integral solution x=b*power(F(x), a)+c-----
+
+def get_sum(a):
+    sum = 0
+    while a > 0:
+        r = a % 10
+        sum += r
+        a = a//10
+    return sum
+
+def value(a, b, c):
+    q = 0
+    w = 0
+    v = []
+    for i in range(1, 82):
+        no = pow(i, a)
+        no = b * no + c
+        if(no > 0 and no < 1000000000):
+            x = get_sum(no)
+            if x == i:
+                q += 1
+                v.append(no)
+                w += 1
+    return v
+
+
+inp = input().split(' ')
+res = value(a=int(inp[0]), b=int(inp[1]), c=int(inp[2]))
+for i in res:
+    print(i, end=' ')
+
+
+#9.---Two arrays ai=ai-bi if ai>=bi, determine max number of steps-----
+
+import math
+
+num_of_nums = int(input())
+
+a_s = list(map(int, input().split()))
+b_s = list(map(int, input().split()))
+
+operations = 0
+m = min(a_s)
+while not all([a_s[0] == tmp for tmp in a_s]):
+    if m < 0:
+        print(-1)
+        exit(0)
+    for i, (a, b) in enumerate(zip(a_s, b_s)):
+        if b == 0 and m != a:
+            print(-1)
+            exit(0)
+        elif b == 0 and m == a:
+            continue
+
+        operations_to_min = int(math.ceil((a - m) / b))
+        operations += operations_to_min
+        a_s[i] = a - operations_to_min * b
+    m = min(a_s)
+print(operations)
+
+#10.---The cost of stocks {100,180,260,310,40,535,695}----
+
+def maxProfit(price, start, end):
+    if (end <= start):
+        return 0
+    profit = 0
+    for i in range(start, end, 1):
+
+        for j in range(i + 1, end + 1):
+
+            if (price[j] > price[i]):
+                curr_profit = price[j] - price[i] + \
+                              maxProfit(price, start, i - 1) + \
+                              maxProfit(price, j + 1, end)
+                profit = max(profit, curr_profit)
+
+    return profit
+
+price = input().split(' ')
+price_list = [int(i) for i in price]
+n = len(price_list)
+print(maxProfit(price_list, 0, n - 1))
+
+#11.---Aman father's keypad phone---
+
+row = [0, 0, -1, 0, 1]
+col = [0, -1, 0, 1, 0]
+
+def getCountUtil(keypad, i, j, n):
+    if keypad is None or n <= 0:
+        return 0
+
+    if n == 1:
+        return 1
+    totalCount = 0
+    for move in range(5):
+        ro = i + row[move]
+        co = j + col[move]
+        if (0 <= ro <= 3 and 0 <= co <= 2 and
+                keypad[ro][co] != '*' and keypad[ro][co] != '#'):
+            totalCount += getCountUtil(keypad, ro, co, n - 1)
+    return totalCount
+
+def getCount(n):
+    keypad = [['1', '2', '3'],
+              ['4', '5', '6'],
+              ['7', '8', '9'],
+              ['*', '0', '#']]
+    if keypad is None or n <= 0:
+        return 0
+    if n == 1:
+        return 10
+    totalCount = 0
+    for i in range(4):
+        for j in range(3):
+            if keypad[i][j] != '*' and keypad[i][j] != '#':
+                totalCount += getCountUtil(keypad, i, j, n)
+    return totalCount
+
+print(getCount(int(input())))
+
+#12.---String Dividor s='atanatanatan' and t='atan'---
+
+def string_divisor(s, t):
+    fits = False
+    concat = t
+    i=1
+    while len(concat)<=len(s):
+        if concat!=s:
+            i+=1
+            concat = t * i
+        else:
+            fits = True
+            break
+    if not fits:
+        return -1
+    for i in range(1,len(t)+1):
+        if (t[:i]*(len(t)//i)) == t:
+            return i
+
+s = input('s = ')
+t = input('t = ')
+print(string_divisor(s,t))
+
+#13.---Alice & Bob stone game---
+
+def stone_game(n, nums):
+    total = sum(nums)
+    dp = [[0]*(n+1) for _ in range(n+1)]
+    front = [0]*(n+1)
+    back = [0]*(n+1)
+    front[1] = nums[0]
+    back[n-1] = nums[n-1]
+
+    for i in range(1,n):
+        front[i+1] = front[i] + nums[i]
+        back[n-1-i] = back[n-i] + nums[n-i-1]
+
+    for start in range(n-1,-1,-1):
+        for end in range(start+1,n,1):
+            pick_s = (total-(front[start+1]+back[end+1])) - dp[start+1][end]
+            pick_e =  (total-(front[start]+back[end])) - dp[start][end-1]
+            dp[start][end] = max(pick_s,pick_e)
+    return dp[0][n-1]
+
+n = int(input('n = '))
+inp_stone = input('stones = ').split(',')
+inp_num = [int(i) for i in inp_stone]
+print(stone_game(n, inp_num))
+
+#14.---points given visiting station(contiguous subarry)----considering the train travel in one direction-----
+
+def maxSubArraySum(size, a):
+    max_so_far = a[0]
+    curr_max = a[0]
+
+    for i in range(1, size):
+        curr_max = max(a[i], curr_max + a[i])
+        max_so_far = max(max_so_far, curr_max)
+
+    return max_so_far
+
+size = int(input())
+a = input().split(' ')
+int_a = [int(i) for i in a]
+print(maxSubArraySum(size, int_a))
+
+#15.---Chocolate reduce half weight[i]/2 doubt----
+
+import math
+def candy_weight(num, d, n):
+    while d >= 1:
+        maxi = num[0]
+        for i in range(n):
+            if num[i] > maxi:
+                maxi = num[i]
+        for j in range(n):
+            if num[j] == maxi:
+                num[j] -= math.floor(num[j]/2)
+        d -= 1
+    # print(num)
+    min_num = 0
+    for i in range(n):
+        min_num += num[i]
+    return min_num
+
+n = int(input())
+inp = input().split()
+l = [int(i) for i in inp]
+d = int(input())
+print(candy_weight(l,d,n))
+
+#16.---Aman's work from home(salesman travel problem cities visited)----
+
+def city(arr,n):
+    k=2
+    count=0
+    for i in range(n-k+1):
+        if arr[i] <= arr[i+1]:
+            count += 1
+    return count
+
+n = int(input())
+arr = input().split(' ')
+int_arr = [int(i) for i in arr]
+print(city(int_arr, n))
+
+#17.---Rotate 90 degree clockwise square matrix----
+
+def rotate(matrix):
+    n = len(matrix)
+    matrix.reverse()
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+    return matrix
+
+def rotate_90(n):
+    j = 0
+    res = []
+    while j < n:
+        arr = input()
+        res.append(arr)
+        j += 1
+
+    res_split = [i.split(' ') for i in res]
+    int_res = []
+    for i in res_split:
+        for x in i:
+            if x == '':
+                pass
+            else:
+                int_res.append(int(x))
+
+    sep_element = [int_res[i:i + n] for i in range(0, len(int_res), n)]
+    #mat = [[int(input()) for x in range(n)] for y in range(n)]
+    result = rotate(sep_element)
+    for i in range(n):
+        for j in range(n):
+            try:
+                print(result[i][j], end=' ')
+            except IndexError:
+                pass
+        print()
+
+rotate_90(int(input()))
+
+#18.-----Check Substring of JLR----
+def check_string(st, n):
+    inp = 'JLR'
+    j = 0
+    l = 0
+    r = 0
+
+    for i in st:
+        if i in inp and n >= 2:
+            if i == 'J':
+                j += 1
+            elif i == 'L':
+                l += 1
+            elif i == 'R':
+                r += 1
+    if j>l and j>r:
+        return sum([j, l, r])
+    else:
+        if j == 1:
+            return -1
+        else:
+            return sum([j, l//j, r//j])-1
+
+n = int(input())
+st = input()
+print(check_string(st, n))
+
+#--------------------------Sample Questions---------------------------
+
+
+#1.----Pattern and word comparison Program----
+
+def is_match(word, pattern, n_word, m_pattern, lookup):
+
+    if n_word < 0 and m_pattern < 0:
+        return True
+
+    elif m_pattern < 0:
+        return False
+
+    elif n_word < 0:
+        for i in range(len(pattern)+1):
+            if '*' in pattern[i]:
+                return True
+            else:
+                False
+
+    if not lookup[n_word][m_pattern]:
+        if '*' in pattern[m_pattern]:
+            lookup[n_word][m_pattern] = is_match(word, pattern, n_word-1, m_pattern, lookup) or \
+                                        is_match(word, pattern, n_word, m_pattern-1, lookup)
+
+        elif pattern[m_pattern] not in '?' and pattern[m_pattern] not in word[n_word]:
+            return False
+        else:
+            lookup[n_word][m_pattern] = is_match(word, pattern, n_word-1, m_pattern-1, lookup)
+
+    return lookup[n_word][m_pattern]
+
+
+word = input('s= ')
+pattern = input('p= ')
+
+lookup = [[False for x in range(len(pattern)+1)] for y in range(len(word)+1)]
+
+if is_match(word, pattern, len(word)-1, len(pattern)-1, lookup):
+    print(True)
+else:
+    print(False)
+
+
+#2.---Sliding Window Maximum----
+
+def slide_window_max(a, k):
+    n = len(a)
+    if n*k == 0:
+        return False
+    return [max(a[i:i +k]) for i in range(n-k +1)]
+
+a = input('nums= ').split(',')
+list_a = [int(i)for i in a]
+k = int(input('k= '))
+print(slide_window_max(list_a, k))
+
+#3.-----Collect Water Drops-----
+
+def collect_water(a):
+    n = len(a)
+    water = 0
+    for i in range(n):
+        left_max = a[i]
+        for j in range(i):
+            left_max = max(left_max, a[j])
+        right_max = a[i]
+        for j in range(i, n):
+            right_max = max(right_max, a[j])
+        water += min(left_max, right_max) - a[i]
+    return water
+
+a = input('height= ').split(',')
+list_a = [int(i) for i in a]
+print(collect_water(list_a))
+
+
+#4.-----Permutation Code----
+
+def get_permutation(n, k):
+    ans = ''
+    num = [i for i in range(1, n+1)]
+    for i in range(1, n+1):
+        index = 0
+        c = math.factorial(n-i)
+
+        while c < k:
+            index += 1
+            k -= c
+        ans += str(num[index])
+        del num[index]
+    return ans
+
+n = int(input('n= '))
+k = int(input('k= '))
+print(get_permutation(n, k))
+
+
+#5.----Rescue a princess------
+
+def dungeon_game(dungeon):
+    dp = [float('inf') for _ in dungeon[0]]
+    dp[-1] = 1
+    for i in reversed(range(len(dungeon))):
+        dp[-1] = max(dp[-1] - dungeon[i][-1], 2)
+        for j in reversed(range(len(dungeon[i])-1)):
+            on_exit = min(dp[j], dp[j+1])
+            dp[j] = max(on_exit-dungeon[i][j], 2)
+    return dp[0]
+
+def inp_array():
+    j = 0
+    arr = []
+    list_a = []
+    while j < 3:
+        a = input('dungeon= ').split(' ')
+        j += 1
+        arr.append(a)
+
+    for i in arr:
+        for x in i:
+            if x == '':
+                pass
+            else:
+                list_a.append(int(x))
+    chunk_a = [list_a[i:i +3]for i in range(0, len(list_a), 3)]
+    print(dungeon_game(chunk_a))
+
+inp_array()
+
+
+
+
+
